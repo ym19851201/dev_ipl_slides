@@ -1,4 +1,4 @@
-!SLIDE 
+!SLIDE subsection
 # OpenCVいじってみた #
 
 !SLIDE bullets incremental
@@ -8,13 +8,14 @@
 * オブジェクト検出
   + 機械学習
   + オブジェクト検出器
-  + 検出してみよう
 * 何に使おうか？
   + 笑い男ごっこ（俺の目を盗んだな）
   + I am ぼるだりんがー
+  + うちの子(ランバ・ラル)検出
 
 !SLIDE smaller
 # OpenCVって何さ？
+
 * 線形代数や統計処理など，コンピュータビジョンに必要な各種数学関数
 * 直線や曲線，テキストなど画像への描画関数
 * OpenCVで使用したデータを読み込み/保存するための関数
@@ -41,21 +42,44 @@
 ## 結局何がしたいって画像認識だしね
 
 !SLIDE subsection
-## オブジェクト検出の流れ
-### 機械学習
+# オブジェクト検出 #
 
-![](http://image.gihyo.co.jp/assets/images/dev/feature/01/opencv/0003/thumb/TH400_01.png)
+!SLIDE
+## オブジェクト検出の流れ
+* サンプル作成
+* 機械学習によって検出器作成
+  ![](http://image.gihyo.co.jp/assets/images/dev/feature/01/opencv/0003/thumb/TH400_01.png)
+* 検出器を使って目的のオブジェクトを検出
+
+!SLIDE small
+# サンプル作成と機械学習
+
+  ![](http://image.gihyo.co.jp/assets/images/dev/feature/01/opencv/0003/thumb/TH400_01.png)
+<p><img src="http://image.gihyo.co.jp/assets/images/dev/feature/01/opencv/0004/thumb/TH250_03.png" alt="" height="250"></p>
+
+!SLIDE small
+# サンプル作成と機械学習
+
+* OK.txt作らなきゃ
+* [ObjectMarker](https://github.com/takmin/ObjectMarker)なるものがあるらしい
+* ビルドできない(情弱)
+* 作りゃいいじゃん(ｼﾞｬｯｳﾞｧで)  
+  →GAIAで培ったMVCをガン無視する技術でGUIを作成  
+  (現在MVCに則って改造中)
+
 
 !SLIDE commandline incremental small 
 
+## 作成したOK.txtでサンプル作成からの機械学習
+
     $ createsamples -info OK.txt -vec pos_output.vec -num 4000 -bgcolor 255 -w 44 -h 18
-    $ haartraining.exe -data gihyo_logo -vec output.vec -bg NG.txt -npos 4000 -nneg 1685 -w 44 -h 18 -mode ALL
+    $ haartraining.exe -data hoge -vec output.vec -bg NG.txt -npos 4000 -nneg 1685 -w 44 -h 18 -mode ALL
 
 
                          ／）
                       ／／／）
                    ／,.=ﾞ''"／
-      ／         i f  ,.r='"-‐'つ＿＿＿_      こまけぇこたぁいいんだよ！！
+      ／         i f  ,.r='"-‐'つ＿＿＿_      コマンド打ちゃあいいんだよ！！
     /           /      _,.-‐'~／⌒    ⌒＼
         ／     ,i      ,二ﾆ⊃（ ●）.  （●）＼
       /       ﾉ       ilﾞフ::::::⌒（__人__）⌒::::: ＼
@@ -71,17 +95,38 @@
 !SLIDE
 ## オブジェクト検出器
 
-XMLです(嫌な思い出)
-使います(Rubyで)
+さっきめっちゃ時間かけて作ったXMLのことです(嫌な思い出)  
+使います(Rubyで)  
 
-@@@ruby
+    @@@ruby
+    a = 'aaa'
 
 
+
+!SLIDE subsection
+# 何に使おうか？
+## ~笑い男ごっこ編~
 
 !SLIDE
-### 検出してみよう
+さっきめっちゃ時間かけて作った検出器ではないものを使って顔検出  
+(だって顔検出器OpenCVに入ってんだもん)  
+→笑い男になれる！
+
+<p><img src="http://bronzeback.cocolog-nifty.com/photos/uncategorized/2007/09/27/laughingman_2.gif" alt="" width="200" height="200"></p>
+
+!SLIDE execute
+## これであなたも笑い男
 
 
+    @@@ruby
+    %w{a b c d e}.each do |e|
+      e + "xxx"
+    end
 
-!SLIDE bullets
-  * 機械学習
+!SLIDE subsection
+# 何に使おうか？
+## ~ボルダリング編~
+
+!SLIDE subsection
+# 何に使おうか？
+## ~ランバ・ラル編~
