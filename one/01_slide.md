@@ -73,7 +73,7 @@
 ## 作成したOK.txtでサンプル作成からの機械学習
 
     $ createsamples -info OK.txt -vec pos_output.vec -num 4000 -bgcolor 255 -w 44 -h 18
-    $ haartraining.exe -data hoge -vec output.vec -bg NG.txt -npos 4000 -nneg 1685 -w 44 -h 18 -mode ALL
+    $ haartraining -data hoge -vec output.vec -bg NG.txt -npos 4000 -nneg 1685 -w 44 -h 18 -mode ALL
 
 
                          ／）
@@ -92,11 +92,15 @@
 ￣Y^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y￣  
 
 
-!SLIDE
+!SLIDE commandline incremental
 ## オブジェクト検出器
 
 さっきめっちゃ時間かけて作ったXMLのことです(嫌な思い出)  
 使います(Rubyで)  
+
+    $ bundle init
+    $ echo 'gem "ruby-opencv"' >> Gemfile
+    $ bundle install --path vendor/bundle
 
     @@@ruby
     a = 'aaa'
