@@ -98,12 +98,14 @@
 さっきめっちゃ時間かけて作ったXMLのことです(嫌な思い出)  
 使います(Rubyで)  
 
+まずは
+
     $ bundle init
     $ echo 'gem "ruby-opencv"' >> Gemfile
     $ bundle install --path vendor/bundle
 
     @@@ruby
-    a = 'aaa'
+    detector = CvHaarClassifierCascade::load("hoge.xml")
 
 
 
@@ -118,19 +120,119 @@
 
 <p><img src="http://bronzeback.cocolog-nifty.com/photos/uncategorized/2007/09/27/laughingman_2.gif" alt="" width="200" height="200"></p>
 
-!SLIDE execute
-## これであなたも笑い男
-
+!SLIDE execute smaller
+# これであなたも笑い男
 
     @@@ruby
-    %w{a b c d e}.each do |e|
-      e + "xxx"
+    require 'opencv'
+    include OpenCV
+
+    def laughing_man(image, rect, laughing_man)
+      image.set_roi rect
+      laughing_man_resized = laughing_man.resize rect
+      (image.rows * image.cols).times do |i|
+        image[i] = laughing_man_resized[i] unless laughing_man_resized[i][0] == 0.0
+      end
+      image.reset_roi
     end
+
+!SLIDE execute smaller
+# これであなたも笑い男続き
+
+    @@@ruby
+    camera = CvCapture.open(0)
+    face = CvHaarClassifierCascade::load("#{HAAR_CASCADE_PATH}/haarcascade_frontalface_default.xml")
+
+    window = GUI::Window.new('camera')
+    laughing_man_img = CvMat.load('LAUGHINGMAN_PATH/laughingman.png')
+
+    while GUI::wait_key(50).nil?
+      image = camera.query
+      puts image.class
+      image = image.resize(CvSize.new(500, 350))
+
+      face.detect_objects(image) do |face_rect|
+        laughing_man(image, face_rect, laughing_man_img)
+      end
+
+      window.show image
+    end
+
+    window.destroy
 
 !SLIDE subsection
 # 何に使おうか？
 ## ~ボルダリング編~
 
+!SLIDE smaller
+## ちゃんと作った検出器使わねば
+
+    @@@ruby
+    require 'opencv'
+    include OpenCV
+
+    boulder = CvHaarClassifierCascade::load("./mark_test/bouldering_hold.xml")
+
+    window = GUI::Window.new('boulder')
+    image = IplImage.load(ARGV[0])
+
+    boulder.detect_objects(image) do |hold|
+      topleft = CvPoint.new(hold.x, hold.y)
+      bottomright = CvPoint.new(hold.x + hold.width, hold.y + hold.height)
+      image.rectangle!(topleft, bottomright, color: CvColor::Red, thickness: 1)
+    end
+
+    window.show image
+
+    GUI::wait_key
+    GUI::Window.destoy_all
+
+!SLIDE
+## 結果
+![result](./2015-03-30T2346060900.png)
+
+微妙(白目)
+
+!SLIDE
+# (白目)
+
+|ポジティブ画像  |ネガティブ画像  |学習時間  |精度(抽象的なもの)|
+|:---------------|:---------------|:---------|:-------------------|
+|3,000枚         |20枚            |約40分    |ほとんど正しく検出されません|
+|4,000枚         |2,000枚         |約8時間   |誤検出が見られます|
+|8,000枚         |4,000枚         |約1週間   |誤検出がほとんどありません|
+
+!SLIDE
+地道に枚数増やしていきます  
+そうします
+
 !SLIDE subsection
 # 何に使おうか？
-## ~ランバ・ラル編~
+## ~緑のランバ・ラル編~
+
+!SLIDE small
+
+我が家にぐーふーがきたんですよ  
+![グフ](http://livedoor.blogimg.jp/vipdayo/imgs/0/5/052b4782.jpg)
+
+!SLIDE
+
+名前は<strike>ランバラル</strike>  
+まるたろう  
+![ランバラル](http://game.watch.impress.co.jp/img/gmw/docs/564/436/gn_03_s.gif)
+
+でも僕はランバラルって(心の中で)呼び続けようと思うんだ
+
+!SLIDE
+## <strike>ランバラル</strike>まるたろうを見ていて気付いたのは以外と個体によって顔も模様も違うってこと  
+
+まるたろう(ランバラル)の写真撮りまくって、  
+他の個体の写真をNGにしたら、  
+(おそらく)世界初ミドリフグの個体識別ができるんじゃないか？
+
+!SLIDE
+## COMING SOON
+
+!SLIDE subsection
+
+# ご清聴ありがとうございます
