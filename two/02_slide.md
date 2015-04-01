@@ -9,12 +9,12 @@
     require 'opencv'
     include OpenCV
 
-    boulder = CvHaarClassifierCascade::load("./mark_test/bouldering_hold.xml")
+    hold_detector = CvHaarClassifierCascade::load("./mark_test/bouldering_hold.xml")
 
     window = GUI::Window.new('boulder')
     image = IplImage.load(ARGV[0])
 
-    boulder.detect_objects(image) do |hold|
+    hold_detector.detect_objects(image) do |hold|
       topleft = CvPoint.new(hold.x, hold.y)
       bottomright = CvPoint.new(hold.x + hold.width, hold.y + hold.height)
       image.rectangle!(topleft, bottomright, color: CvColor::Red, thickness: 1)

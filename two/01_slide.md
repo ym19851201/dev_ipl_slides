@@ -42,16 +42,16 @@
 
     @@@ruby
     camera = CvCapture.open(0)
-    face = CvHaarClassifierCascade::load("#{HAAR_CASCADE_PATH}/haarcascade_frontalface_default.xml")
+    face_detector = CvHaarClassifierCascade::load("#{HAAR_CASCADE_PATH}/haarcascade_frontalface_default.xml")
 
     window = GUI::Window.new('camera')
-    laughing_man_img = CvMat.load('LAUGHINGMAN_PATH/laughingman.png')
+    laughing_man_img = CvMat.load("#{LAUGHINGMAN_PATH}/laughingman.png")
 
     while GUI::wait_key(50).nil?
       image = camera.query
       image = image.resize(CvSize.new(500, 350))
 
-      face.detect_objects(image) do |face_rect|
+      face_detector.detect_objects(image) do |face_rect|
         laughing_man(image, face_rect, laughing_man_img)
       end
 
